@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FINDIT | Lost & Found</title>
+<style>
+:root{--navy:#12213a;--blue:#315efb;--mint:#c9f7df;--bg:#f4f7fb;--ink:#172033;--muted:#68758a;--line:#dfe6ef;--white:#fff;--red:#b42318}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial;color:var(--ink)}
+header{background:var(--navy);color:white;padding:20px max(20px,calc((100% - 1060px)/2));display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{font-size:25px;font-weight:900;letter-spacing:1px}.brand span{color:var(--mint)}header small{color:#d8e1ef}
+main{max-width:1060px;margin:24px auto;padding:0 16px 40px}.hero{background:linear-gradient(120deg,#e4edff,#f0fff6);padding:26px;border-radius:22px;display:grid;grid-template-columns:1.5fr 1fr;gap:20px;align-items:center;border:1px solid #d9e4f6}
+h1{font-size:clamp(28px,4vw,44px);line-height:1.08;margin:8px 0 12px}.hero p{color:#48566c;margin:0 0 16px}.pill{display:inline-block;background:white;border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:13px;font-weight:700}
+.hero-art{background:white;border-radius:18px;padding:20px;text-align:center;border:1px solid var(--line)}.qrbox{width:150px;height:150px;margin:10px auto;display:grid;place-items:center;background:#fff;border:2px dashed #9db0ca;border-radius:12px;color:#6c7b91;font-weight:800}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.tab,button{border:0;border-radius:11px;padding:11px 15px;font-weight:750;cursor:pointer;font-size:14px}.tab{background:#e5eaf2;color:#34425a}.tab.active,button.primary{background:var(--blue);color:white}.tab:focus,button:focus,input:focus,select:focus,textarea:focus{outline:3px solid #a8baff;outline-offset:1px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.card{background:white;border:1px solid var(--line);border-radius:17px;padding:20px;box-shadow:0 5px 18px #152d4a08}.card h2{margin:0 0 5px;font-size:21px}.muted{color:var(--muted);font-size:14px}.field{margin:13px 0}.field label{display:block;font-weight:750;font-size:14px;margin-bottom:5px}input,select,textarea{width:100%;padding:11px 12px;border:1px solid #cbd5e1;border-radius:10px;background:white;font:inherit}textarea{min-height:88px;resize:vertical}.note{background:#fff8e7;border:1px solid #f4d89a;border-radius:12px;padding:12px;color:#6b4d0b;font-size:13px}.success{background:#eafaf0;border:1px solid #b8ebca;padding:12px;border-radius:12px;color:#17653a;margin-top:12px}.error{color:var(--red);font-size:13px}.hidden{display:none!important}.statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}.stat{background:#f4f7ff;border-radius:12px;padding:13px}.stat strong{display:block;font-size:25px}.taglist{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}.tag{border:1px dashed #9eacc0;border-radius:14px;padding:14px;text-align:center;background:white}.tagcode{font-size:23px;font-weight:900;letter-spacing:1px}.tag small{display:block;color:var(--muted)}.tag .qr{margin:10px auto;width:150px;min-height:150px;display:grid;place-items:center}.tag img{max-width:150px}.tablewrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{background:#f4f7fb}.status{font-size:12px;font-weight:800;padding:4px 8px;border-radius:20px;background:#e9eef8}.smallbtn{padding:7px 9px;margin:2px;font-size:12px}.footer{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+@media(max-width:720px){.hero,.grid{grid-template-columns:1fr}.hero-art{display:none}.statgrid{grid-template-columns:1fr 1fr}main{margin-top:14px}.card{padding:16px}}
+@media print{header,nav,.hero,.noprint,.footer{display:none!important}body{background:white}.card{box-shadow:none}.tag{break-inside:avoid}.taglist{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<header><div><div class="brand">FIND<span>IT</span></div><small>Lost less. Find it faster.</small></div><small>ALCHEMY '26 • Student startup prototype</small></header>
+<main>
+<section class="hero">
+ <div><span class="pill">SCHOOL LOST & FOUND</span><h1>Every lost item deserves a way home.</h1><p>Register a tag, report an item you found, and let the designated FINDIT coordinator help return it safely.</p><button class="primary" onclick="showTab('report')">Report a found item</button></div>
+ <div class="hero-art"><div class="pill">HOW IT WORKS</div><div class="qrbox">SCAN TAG<br>↓<br>REPORT ITEM</div><strong>Private by design</strong><p class="muted">Owner contact details are not shown on public tag pages.</p></div>
+</section>
+<nav class="noprint">
+<button class="tab active" data-tab="home" onclick="showTab('home')">Home</button>
+<button class="tab" data-tab="register" onclick="showTab('register')">Register a tag</button>
+<button class="tab" data-tab="report" onclick="showTab('report')">Report found item</button>
+<button class="tab" data-tab="tags" onclick="showTab('tags')">Make demo tags</button>
+<button class="tab" data-tab="admin" onclick="showTab('admin')">Coordinator dashboard</button>
+</nav>
+
+<section id="home" class="tabpage">
+<div class="grid">
+ <div class="card"><h2>For item owners</h2><p class="muted">Register your tag ID and item with the coordinator. Do not write phone numbers or home addresses on the tag.</p><button class="primary" onclick="showTab('register')">Register an item</button></div>
+ <div class="card"><h2>For people who find an item</h2><p class="muted">Enter the tag ID and the place where you found the item. The coordinator will help contact the owner.</p><button class="primary" onclick="showTab('report')">Submit a report</button></div>
+</div>
+<div class="card" style="margin-top:16px"><h2>Important for this prototype</h2><div class="note">This starter website saves demonstration data only in this browser on this computer. It is not yet a shared online system. For real use across different phones, connect a secure backend or a school-approved form and restrict coordinator access.</div></div>
+</section>
+
+<section id="register" class="tabpage hidden">
+<div class="card"><h2>Register a FINDIT tag</h2><p class="muted">For demonstration only. Use fictional details until the school approves real data collection.</p>
+<form id="registerForm">
+<div class="field"><label for="regTag">Tag ID</label><input id="regTag" required pattern="[A-Za-z0-9-]{3,20}" placeholder="FD001"></div>
+<div class="field"><label for="regItem">Item type</label><select id="regItem" required><option value="">Choose item</option><option>School bag</option><option>Water bottle</option><option>Pencil case</option><option>Lunch box</option><option>Other</option></select></div>
+<div class="field"><label for="regNickname">Owner display name or nickname</label><input id="regNickname" required maxlength="40" placeholder="e.g. Student A"></div>
+<div class="field"><label for="regContact">Owner/guardian contact (private)</label><input id="regContact" required maxlength="80" placeholder="Demo contact only"></div>
+<label><input type="checkbox" id="regConsent" required style="width:auto"> I have permission to enter these details for this demo.</label><br><br>
+<button class="primary" type="submit">Save tag registration</button><div id="regMsg" aria-live="polite"></div>
+</form></div>
+</section>
+
+<section id="report" class="tabpage hidden">
+<div class="card"><h2>Report an item you found</h2><p class="muted">No owner contact details are displayed here. A coordinator can check the tag ID privately.</p>
+<form id="reportForm">
+<div class="field"><label for="reportTag">Tag ID</label><input id="reportTag" required maxlength="20" placeholder="FD001"></div>
+<div class="field"><label for="reportPlace">Where did you find it?</label><select id="reportPlace" required><option value="">Choose location</option><option>Classroom</option><option>Library</option><option>Playground</option><option>School bus</option><option>Canteen</option><option>Other school area</option></select></div>
+<div class="field"><label for="reportNote">Optional note (do not include sensitive personal details)</label><textarea id="reportNote" maxlength="240" placeholder="e.g. Handed to the library desk"></textarea></div>
+<button class="primary" type="submit">Send found-item report</button><div id="reportMsg" aria-live="polite"></div>
+</form></div>
+</section>
+
+<section id="tags" class="tabpage hidden">
+<div class="card"><h2>Create demonstration tags</h2><p class="muted">Add sample tag IDs, then print the tags. In this offline demo, QR codes contain the report-page URL for this site; after publishing, regenerate/test the QR codes using the final public URL.</p>
+<div class="field"><label for="tagPrefix">Tag prefix</label><input id="tagPrefix" value="FD" maxlength="8"></div>
+<div class="field"><label for="tagCount">Number of tags (1–12)</label><input id="tagCount" type="number" min="1" max="12" value="3"></div>
+<button class="primary" onclick="makeTags()">Generate tags</button> <button onclick="window.print()">Print tags</button>
+<div id="tagOutput" class="taglist" style="margin-top:16px"></div>
+<div class="note" style="margin-top:14px">QR generation needs internet access because this starter uses a QR image service. Never print QR codes until you have tested them on a phone. When the website is hosted online, each code must open the real public reporting page with its tag ID pre-filled.</div>
+</div></section>
+
+<section id="admin" class="tabpage hidden">
+<div class="card"><h2>Coordinator dashboard</h2><p class="muted">Demo dashboard on this computer only. This is not password-protected or suitable for real personal data.</p>
+<div class="note">Use fictional records for the exhibition. A real school deployment needs authenticated coordinator access, secure storage, restricted permissions and a data-retention plan.</div>
+<div class="statgrid"><div class="stat"><span class="muted">Registered tags</span><strong id="statTags">0</strong></div><div class="stat"><span class="muted">Found reports</span><strong id="statReports">0</strong></div><div class="stat"><span class="muted">Returned</span><strong id="statReturned">0</strong></div></div>
+<h3>Registered tags</h3><div id="ownerTable" class="tablewrap"></div>
+<h3 style="margin-top:22px">Found-item reports</h3><div id="reportTable" class="tablewrap"></div>
+<button onclick="exportData()">Export demo data (CSV)</button> <button onclick="clearData()">Clear demo data</button>
+</div></section>
+<div class="footer">FINDIT student prototype • Keep owner information private • Demo data stays in this browser</div>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const get=(key)=>{try{return JSON.parse(localStorage.getItem(key)||"[]")}catch(e){return []}};
+const put=(key,val)=>localStorage.setItem(key,JSON.stringify(val));
+function showTab(name){
+ document.querySelectorAll('.tabpage').forEach(x=>x.classList.add('hidden'));
+ $(name).classList.remove('hidden');
+ document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===name));
+ if(name==='admin') renderAdmin();
+ if(name==='report'){
+   const tag=new URLSearchParams(location.search).get('tag');
+   if(tag) $('reportTag').value=tag;
+ }
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+$('registerForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const id=$('regTag').value.trim().toUpperCase();
+ let owners=get('findit_owners');
+ if(owners.some(x=>x.id===id)){ $('regMsg').innerHTML='<p class="error">That tag ID already exists. Choose another.</p>';return; }
+ owners.push({id,item:$('regItem').value,nickname:$('regNickname').value.trim(),contact:$('regContact').value.trim(),date:new Date().toLocaleString()});
+ put('findit_owners',owners);
+ $('regMsg').innerHTML='<div class="success">Tag registered in this browser. Try a found-item report with the same ID.</div>';
+ e.target.reset();
+});
+$('reportForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const id=$('reportTag').value.trim().toUpperCase();
+ let reports=get('findit_reports');
+ reports.push({id,place:$('reportPlace').value,note:$('reportNote').value.trim(),date:new Date().toLocaleString(),returned:false});
+ put('findit_reports',reports);
+ const known=get('findit_owners').some(x=>x.id===id);
+ $('reportMsg').innerHTML='<div class="success">Demo report saved. '+(known?'The coordinator can check the registered tag.':'No registered tag was found in this demo; the coordinator should review it manually.')+'</div>';
+ e.target.reset();
+});
+function renderAdmin(){
+ const owners=get('findit_owners'), reports=get('findit_reports');
+ $('statTags').textContent=owners.length;$('statReports').textContent=reports.length;$('statReturned').textContent=reports.filter(x=>x.returned).length;
+ $('ownerTable').innerHTML=owners.length?'<table><thead><tr><th>Tag</th><th>Item</th><th>Display name</th><th>Private contact (demo only)</th></tr></thead><tbody>'+owners.map(x=>`<tr><td>${esc(x.id)}</td><td>${esc(x.item)}</td><td>${esc(x.nickname)}</td><td>${esc(x.contact)}</td></tr>`).join('')+'</tbody></table>':'<p class="muted">No tags registered yet.</p>';
+ $('reportTable').innerHTML=reports.length?'<table><thead><tr><th>Tag</th><th>Location</th><th>Note</th><th>Submitted</th><th>Status</th><th>Action</th></tr></thead><tbody>'+reports.map((x,i)=>`<tr><td>${esc(x.id)}</td><td>${esc(x.place)}</td><td>${esc(x.note||'—')}</td><td>${esc(x.date)}</td><td><span class="status">${x.returned?'Returned':'Open'}</span></td><td>${x.returned?'':`<button class="smallbtn primary" onclick="markReturned(${i})">Mark returned</button>`}</td></tr>`).join('')+'</tbody></table>':'<p class="muted">No reports yet.</p>';
+}
+function markReturned(i){let r=get('findit_reports');if(r[i]){r[i].returned=true;put('findit_reports',r);renderAdmin()}}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function makeTags(){
+ const prefix=($('tagPrefix').value.trim().toUpperCase()||'FD').replace(/[^A-Z0-9-]/g,'').slice(0,8);
+ const count=Math.max(1,Math.min(12,parseInt($('tagCount').value)||3));
+ const out=$('tagOutput');out.innerHTML='';
+ for(let i=1;i<=count;i++){
+  const id=prefix+String(i).padStart(3,'0');
+  const url=location.href.split('?')[0].split('#')[0]+'?page=report&tag='+encodeURIComponent(id);
+  const box=document.createElement('div');box.className='tag';
+  box.innerHTML=`<div class="tagcode">FINDIT</div><small>LOST? SCAN TO REPORT</small><div class="qr"><img alt="QR code for ${esc(id)}" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(url)}"></div><div><strong>${esc(id)}</strong></div><small>Return through the FINDIT coordinator</small>`;
+  out.appendChild(box);
+ }
+}
+function exportData(){
+ const owners=get('findit_owners'),reports=get('findit_reports');
+ const rows=[['type','tag_id','item','display_name','private_contact','location','note','date','returned']];
+ owners.forEach(x=>rows.push(['registration',x.id,x.item,x.nickname,x.contact,'','','', '']));
+ reports.forEach(x=>rows.push(['report',x.id,'','','',x.place,x.note,x.date,String(x.returned)]));
+ const csv=rows.map(row=>row.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='findit-demo-data.csv';a.click();URL.revokeObjectURL(a.href);
+}
+function clearData(){if(confirm('Delete all FINDIT demo records from this browser?')){localStorage.removeItem('findit_owners');localStorage.removeItem('findit_reports');renderAdmin()}}
+const page=new URLSearchParams(location.search).get('page');
+if(page==='report') showTab('report');
+</script>
+</body></html>
